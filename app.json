@@ -4,7 +4,7 @@
     "slug": "Rabit-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/Rabit icon/Icon.png",
     "scheme": "rabitmobile",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,29 +13,31 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#010101",
+        "foregroundImage": "./assets/Rabit icon/Icon.png",
+        "backgroundImage": "./assets/Rabit icon/Icon.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "softwareKeyboardLayoutMode": "adjustResize",
+      "package": "com.foundoneblock.Rabitmobile"
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/Rabit fav icon all size/icon + background 48x48.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./assets/Rabit icon/Icon.png",
+          "imageWidth": 120,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#EFEFEF",
           "dark": {
-            "backgroundColor": "#000000"
+            "image": "./assets/Rabit icon/Icon white.png",
+            "backgroundColor": "#010101"
           }
         }
       ]
@@ -43,6 +45,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "890a4253-50f7-4cf0-bf3a-c71c16eb5561"
+      }
+    },
+    "owner": "foundoneblock"
   }
 }
