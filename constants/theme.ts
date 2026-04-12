@@ -92,6 +92,13 @@ export const tokens = {
     10: "40px",
     12: "48px",
   },
+  
+  // Layout offsets for floating elements
+  layout: {
+    navBarHeight: 80,
+    floatingButtonHeight: 100,
+    bottomGap: 50,
+  },
 
   // Base Radius
   radius: {

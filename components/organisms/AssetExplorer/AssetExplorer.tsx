@@ -53,11 +53,12 @@ export const AssetExplorer = () => {
         style={{ 
           marginHorizontal: -parseInt(tokens.spacing[4]),
           marginBottom: 10,
+          overflow: 'visible',
         }}
         contentContainerStyle={{ 
           gap: parseInt(tokens.spacing[2]),
           paddingHorizontal: parseInt(tokens.spacing[4]),
-          paddingVertical: 4, 
+          paddingVertical: 6, 
         }}
       >
         {FILTERS.map((filter) => (
@@ -78,6 +79,7 @@ export const AssetExplorer = () => {
             {...asset}
             isFavorite={favoriteSymbols.includes(asset.symbol)}
             onToggleFavorite={() => toggleFavorite(asset.symbol)}
+            onPress={() => router.push(`/asset-detail/${asset.symbol}`)}
           />
         ))}
 
@@ -86,7 +88,7 @@ export const AssetExplorer = () => {
             <Chip 
               label="View More" 
               isActive={false} 
-              onPress={() => router.push('/asset')}
+              onPress={() => router.navigate('/asset')}
               style={{ paddingHorizontal: 24 }}
             />
           </View>

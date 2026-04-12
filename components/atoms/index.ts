@@ -4,3 +4,4 @@ export * from "./Input";
 export * from "./CryptoIcon";
 export * from "./Chip";
 export * from "./Button";
+export * from "./Skeleton";

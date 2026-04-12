@@ -1,6 +1,6 @@
 import { tokens } from "@/constants/theme";
 
-export type CryptoIconVariant = "mono" | "color";
+export type CryptoIconVariant = "mono" | "color" | "white" | "black";
 
 export interface CryptoIconProps {
   /** Nama asset (case sensitive, sesuai @web3icons/react, contoh: 'Btc', 'Eth') */

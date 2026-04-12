@@ -4,7 +4,7 @@ import { tokens } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import type { InputProps } from './Input.types';
 
-export const Input = ({ variant = "primary", hasError, style, ...props }: InputProps) => {
+export const Input = ({ variant = "primary", hasError, inputRef, style, ...props }: InputProps & { inputRef?: React.Ref<TextInput> }) => {
   const theme = useColorScheme() ?? 'light';
 
   // Styles dinamis berbasis design token global
@@ -19,6 +19,7 @@ export const Input = ({ variant = "primary", hasError, style, ...props }: InputP
 
   return (
     <TextInput
+      ref={inputRef}
       style={[inputStyle, style]}
       placeholderTextColor={tokens.color[theme].textPlaceholder}
       {...props}

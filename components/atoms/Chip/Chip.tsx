@@ -20,12 +20,12 @@ export const Chip = ({ label, isActive, onPress }: ChipProps) => {
       style={{
         paddingHorizontal: parseInt(tokens.spacing[4]),
         paddingVertical: parseInt(tokens.spacing[2]),
-        borderRadius: parseInt(tokens.radius.full),
+        borderRadius: 12, // Match Stats/Chart radius
         backgroundColor: isActive 
           ? tokens.color.brand 
-          : (theme === 'dark' ? '#1A1A1A' : '#E8E8E8'),
+          : (theme === 'dark' ? '#1A1A1A' : '#F5F5F5'),
         borderWidth: 1,
-        borderColor: isActive ? tokens.color.brand : 'transparent',
+        borderColor: isActive ? tokens.color.brand : (theme === 'dark' ? '#333' : '#E0E0E0'),
       }}
     >
       <Text 

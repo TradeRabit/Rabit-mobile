@@ -184,7 +184,7 @@ export const HomeHeader = () => {
           </View>
 
           {/* Asset List (Limited height for responsivity) */}
-          <View style={{ maxHeight: 220 }}>
+          <View style={{ maxHeight: 190 }}>
             <ScrollView 
               showsVerticalScrollIndicator={false} 
               bounces={false}

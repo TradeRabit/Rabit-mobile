@@ -11,6 +11,9 @@ export const Text = ({
   color = "primary",
   align = "auto",
   style,
+  numberOfLines,
+  ellipsizeMode,
+  ...rest
 }: TextProps) => {
   const theme = useColorScheme() ?? 'light';
 
@@ -38,6 +41,9 @@ export const Text = ({
         },
         style
       ]}
+      numberOfLines={numberOfLines}
+      ellipsizeMode={ellipsizeMode}
+      {...rest}
     >
       {children}
     </NativeText>

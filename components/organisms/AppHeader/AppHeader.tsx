@@ -54,8 +54,7 @@ export const AppHeader = () => {
       flexDirection: 'row',
       justifyContent: 'space-between', // Pisahkan logo dan tombol settings
       alignItems: 'center',
-      paddingTop: parseInt(tokens.spacing[2]),
-      paddingBottom: parseInt(tokens.spacing[4]),
+      paddingVertical: parseInt(tokens.spacing[1]), // Reduced from spacing[2]/[4]
       backgroundColor: bgColor,
       zIndex: 10,
       overflow: 'visible',
@@ -63,8 +62,8 @@ export const AppHeader = () => {
       <Image 
         source={logoSource} 
         style={{ 
-          width: 120, 
-          height: 70,
+          width: 100, // Reduced from 120
+          height: 40, // Reduced from 70
         }} 
         resizeMode="contain" 
       />

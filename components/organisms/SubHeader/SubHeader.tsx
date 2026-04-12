@@ -7,15 +7,17 @@ import { tokens } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export interface SubHeaderProps {
-  title?: string;
+  title?: string | React.ReactNode;
   showBack?: boolean;
   rightActions?: React.ReactNode;
+  onBack?: () => void;
 }
 
 export const SubHeader = ({ 
   title, 
   showBack = true, 
-  rightActions 
+  rightActions,
+  onBack
 }: SubHeaderProps) => {
   const theme = useColorScheme() ?? 'light';
   const textColor = tokens.color[theme].text;
@@ -27,7 +29,7 @@ export const SubHeader = ({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingVertical: parseInt(tokens.spacing[2]), // Menyamakan dengan AppHeader
+      paddingVertical: 10, // Ketinggian header diseragamkan ke 10px padding vertical
       backgroundColor: bgColor,
       zIndex: 10,
       overflow: 'visible',
@@ -36,7 +38,7 @@ export const SubHeader = ({
       <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 12 }}>
         {showBack && (
           <TouchableOpacity 
-            onPress={() => router.back()}
+            onPress={onBack ? onBack : () => router.back()}
             activeOpacity={0.7}
             style={{ 
               padding: 8, 
@@ -50,9 +52,13 @@ export const SubHeader = ({
         )}
         
         {title && (
-          <Text size="lg" weight="bold" style={{ color: textColor }}>
-            {title}
-          </Text>
+          typeof title === 'string' ? (
+            <Text size="lg" weight="bold" style={{ color: tokens.color[theme].textPrimary }}>
+              {title}
+            </Text>
+          ) : (
+            title
+          )
         )}
       </View>
 

@@ -1,12 +1,19 @@
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
-import { AppHeader, AssetExplorer } from '@/components/organisms';
+import { AppHeader, AssetExplorer, BalanceSection } from '@/components/organisms';
+import { BalanceSkeleton, AssetExplorerSkeleton } from '@/components/molecules';
 import { ScreenLayout } from '@/components/templates';
 import { tokens } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function HomeScreen() {
   const theme = useColorScheme() ?? 'light';
-  const bgColor = tokens.color[theme].background;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <ScreenLayout>
@@ -15,13 +22,27 @@ export default function HomeScreen() {
       <View style={{ flex: 1 }}>
         <ScrollView 
           contentContainerStyle={{ 
-            paddingBottom: 140, 
-            paddingTop: parseInt(tokens.spacing[6]) 
+            paddingHorizontal: parseInt(tokens.spacing[4]),
+            paddingBottom: tokens.layout.bottomGap, 
+            paddingTop: 18
           }}
           showsVerticalScrollIndicator={false}
-          style={{ flex: 1 }}
+          style={{ 
+            flex: 1,
+            marginHorizontal: -parseInt(tokens.spacing[4]),
+          }}
         >
-          <AssetExplorer />
+          {loading ? (
+            <>
+              <BalanceSkeleton />
+              <AssetExplorerSkeleton />
+            </>
+          ) : (
+            <>
+              <BalanceSection />
+              <AssetExplorer />
+            </>
+          )}
         </ScrollView>
       </View>
     </ScreenLayout>
