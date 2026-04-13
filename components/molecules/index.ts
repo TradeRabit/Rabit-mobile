@@ -6,3 +6,5 @@ export * from "./OrbitAnimation";
 export * from "./PulseAnimation";
 export * from "./FloatAnimation";
 export * from "./Skeletons/Skeletons";
+export * from "./ChatInput";
+export * from "./ModelSelector";

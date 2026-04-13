@@ -5,7 +5,7 @@ import * as PhosphorIcons from "phosphor-react-native";
 export type IconName = keyof typeof PhosphorIcons;
 
 // Mengambil referensi color dari token yang sudah kita set
-export type IconColor = "primary" | "secondary" | "brand" | "success" | "error" | "placeholderGrey" | "placeholderBlack";
+export type IconColor = "primary" | "secondary" | "brand" | "success" | "error" | "placeholderGrey" | "placeholderBlack" | "white";
 
 export interface IconProps {
   name: IconName;

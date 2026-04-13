@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Icon, Input } from '@/components/atoms';
+import { Icon } from '@/components/atoms/Icon';
+import { Input } from '@/components/atoms/Input';
 import { tokens } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import type { SearchBarProps } from './SearchBar.types';

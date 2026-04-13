@@ -5,3 +5,4 @@ export * from './AssetExplorer';
 export * from './AssetList';
 export * from './SubHeader';
 export * from './NumPad';
+export * from './ChatSidebar';

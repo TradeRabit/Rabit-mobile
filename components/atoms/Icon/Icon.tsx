@@ -22,6 +22,7 @@ export const Icon = ({
       case "error": return tokens.color[theme].error;
       case "placeholderGrey": return tokens.color[theme].placeholderGreyBg;
       case "placeholderBlack": return tokens.color[theme].placeholderBlackBg;
+      case "white": return "#FFFFFF";
       default: return tokens.color[theme].textPrimary;
     }
   };
