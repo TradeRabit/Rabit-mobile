@@ -1,0 +1,3 @@
+@echo off
+echo Starting TradingView Chart API Server...
+node src/server/api.js

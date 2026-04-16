@@ -129,7 +129,7 @@ export default function AssistPage() {
   const [messages, setMessages] = useState<any[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isHintsVisible, setIsHintsVisible] = useState(false);
-  const [chartState, setChartState] = useState<'closed' | 'open' | 'minimized' | 'fullscreen'>('minimized');
+  const [chartState, setChartState] = useState<'closed' | 'open' | 'minimized' | 'fullscreen'>('minimized'); // Changed default to 'minimized'
   const [isChartReady, setIsChartReady] = useState(false);
   const [selectedSymbol, setSelectedSymbol] = useState('BTC');
   const [isSymbolSelectorVisible, setIsSymbolSelectorVisible] = useState(false);
@@ -138,7 +138,7 @@ export default function AssistPage() {
   const screenHeight = Dimensions.get('window').height;
   const MAX_CHART_HEIGHT = screenHeight * 0.45;
   const MIN_CHART_HEIGHT = 44;
-  const chartHeight = useSharedValue(MIN_CHART_HEIGHT);
+  const chartHeight = useSharedValue(MIN_CHART_HEIGHT); // Start minimized
   const caretRotation = useSharedValue(0);
 
   const handleOpenChart = () => {
@@ -311,6 +311,7 @@ export default function AssistPage() {
         </View>
 
         {/* Animated Chart Section (Splitscreen) */}
+        {/* Chart is always rendered (even when minimized) so it's ready for agent commands */}
         {chartState !== 'closed' && chartState !== 'fullscreen' && (
           <Animated.View style={[animatedChartStyle, {
             marginHorizontal: 4,
@@ -357,11 +358,13 @@ export default function AssistPage() {
               </View>
             </View>
 
-            {/* Chart Body */}
+            {/* Chart Body - Always rendered but hidden when minimized */}
             <View style={{ 
               flex: 1, 
               backgroundColor: tokens.color[theme].background,
-              display: chartState === 'minimized' ? 'none' : 'flex'
+              display: 'flex', // Always render, just hide visually
+              opacity: chartState === 'minimized' ? 0 : 1,
+              height: chartState === 'minimized' ? 0 : undefined,
             }}>
               <WebView 
                 source={{ 
@@ -383,12 +386,13 @@ export default function AssistPage() {
                     const data = JSON.parse(event.nativeEvent.data);
                     if (data.type === 'CHART_READY') {
                       setIsChartReady(true);
+                      console.log('Chart is ready and can receive commands');
                     }
                   } catch (_) {}
                 }}
               />
               
-              {!isChartReady && (
+              {!isChartReady && chartState === 'open' && (
                 <View style={{
                   position: 'absolute',
                   top: 0, left: 0, right: 0, bottom: 0,
