@@ -1,0 +1,39 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# TradingView Charting Library (proprietary)
+/src/charting_library
+/public/charting_library
+
+# Ignore all src files except specific folders
+/src/*
+!/src/components
+!/src/datafeeds
+!/src/utils
+
+# Ignore all public files except specific ones
+/public/*
+!/public/datafeeds
+!/public/rabit_theme.css
+!/public/index.html
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

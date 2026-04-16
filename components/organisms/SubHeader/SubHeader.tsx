@@ -20,7 +20,7 @@ export const SubHeader = ({
   onBack
 }: SubHeaderProps) => {
   const theme = useColorScheme() ?? 'light';
-  const textColor = tokens.color[theme].text;
+  const textColor = tokens.color[theme].textPrimary;
   const bgColor = tokens.color[theme].background;
 
   return (
@@ -29,7 +29,8 @@ export const SubHeader = ({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingVertical: 10, // Ketinggian header diseragamkan ke 10px padding vertical
+      paddingVertical: 14,
+      paddingHorizontal: parseInt(tokens.spacing[4]),
       backgroundColor: bgColor,
       zIndex: 10,
       overflow: 'visible',
@@ -43,8 +44,6 @@ export const SubHeader = ({
             style={{ 
               padding: 8, 
               marginLeft: -8, // Mengoffset padding icon agar tetap lurus dengan konten di bawahnya
-              borderRadius: 99,
-              backgroundColor: tokens.color[theme].surface,
             }}
           >
             <Icon name="CaretLeft" size={24} color={textColor} weight="bold" />
@@ -75,7 +74,7 @@ export const SubHeader = ({
           top: '100%',
           left: -parseInt(tokens.spacing[4]), // expand to account for screen padding
           right: -parseInt(tokens.spacing[4]),
-          height: 40,
+          height: 0,
         }}
       >
         <LinearGradient

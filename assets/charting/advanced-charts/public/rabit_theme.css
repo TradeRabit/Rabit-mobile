@@ -1,0 +1,329 @@
+/* Rabit Theme Overrides for TradingView Advanced Charts v26 */
+/* Uses officially exposed CSS variables - stable across builds */
+
+:root {
+  /* ── BACKGROUNDS ── */
+  --tv-color-platform-background: var(--rabit-bg, #010101) !important;
+  --tv-color-pane-background: var(--rabit-bg, #010101) !important;
+  --tv-color-toolbar-widget-background: var(--rabit-bg, #010101) !important;
+  --tv-color-toolbar-button-background-hover: rgba(255,255,255,0.06) !important;
+  --tv-color-popup-background: var(--rabit-bg, #010101) !important;
+  --tv-color-floating-toolbar-background: var(--rabit-bg, #010101) !important;
+  --tv-color-dialogs-background: var(--rabit-bg, #010101) !important;
+  
+  /* ── DIALOG/MODAL BACKGROUNDS (for indicators, settings, etc) ── */
+  --tv-color-popup-element-background: var(--rabit-bg, #010101) !important;
+  --tv-color-dialog-background: var(--rabit-bg, #010101) !important;
+  --tv-color-modal-background: var(--rabit-bg, #010101) !important;
+  --tv-color-overlay-background: var(--rabit-bg, #010101) !important;
+  --tv-color-popup-menu-background: var(--rabit-bg, #010101) !important;
+  --tv-color-drawer-background: var(--rabit-bg, #010101) !important;
+  --tv-color-scroll-background: var(--rabit-bg, #010101) !important;
+
+  /* ── BORDERS ── */
+  --tv-color-platform-border: rgba(255,255,255,0.08) !important;
+  --tv-color-toolbar-divider-background: rgba(255,255,255,0.08) !important;
+  
+  /* ── ACTIVE/SELECTED BORDERS ── */
+  --tv-color-item-active-border: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-item-selected-border: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-tab-active-border: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-focused-border: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-input-border-focused: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-outline-focused: var(--rabit-brand, #FD4C01) !important;
+
+  /* ── ACTIVE / BRAND COLORS ── */
+  --tv-color-item-active-text: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-focused-primary-button-background: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-focused-primary-button-text: #FFFFFF !important;
+  --tv-color-toolbar-button-text-active: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-button-primary-background: var(--rabit-brand, #FD4C01) !important;
+  --tv-color-button-primary-background-hovered: var(--rabit-brand, #FD4C01) !important;
+  
+  /* ── FIX BLUE BUTTONS ── */
+  --tv-color-button-secondary-background: transparent !important;
+  --tv-color-button-secondary-background-hovered: rgba(255,255,255,0.06) !important;
+  --tv-color-button-secondary-text: #FFFFFF !important;
+  --tv-color-button-default-background: transparent !important;
+  --tv-color-button-default-background-hovered: rgba(255,255,255,0.06) !important;
+  --tv-color-button-default-text: #FFFFFF !important;
+
+  /* ── SIDEBAR ACTIVE ── */
+  --tv-color-highlighted-button-background: transparent !important;
+  
+  /* ── FIX BLUE COLOR ON ACTIVE SIDEBAR BUTTONS ── */
+  --tv-color-toolbar-button-background-active: transparent !important;
+  --tv-color-toolbar-button-background-expanded: transparent !important;
+  --tv-color-toolbar-toggle-button-background-active: transparent !important;
+  --tv-color-item-active-background: transparent !important;
+  
+  /* ── FIX BLUE COLOR ON OVERLAY/POPUP ACTIVE ITEMS ── */
+  --tv-color-popup-element-background-hover: rgba(255,255,255,0.06) !important;
+  --tv-color-popup-element-background-active: transparent !important;
+  --tv-color-list-item-background-hover: rgba(255,255,255,0.06) !important;
+  --tv-color-list-item-background-active: transparent !important;
+  --tv-color-item-hover-background: rgba(255,255,255,0.06) !important;
+  --tv-color-item-selected-background: transparent !important;
+  --tv-color-tab-active-background: transparent !important;
+  --tv-color-tab-selected-background: transparent !important;
+}
+
+/* ── EXPLICIT BORDERS via TradingView structural selectors ── */
+
+/* Topbar bottom border */
+td[data-role="header"],
+div[data-name="header-toolbar-intervals"],
+div[data-name="header-toolbar-study-templates"] {
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Left drawing sidebar right border */
+td[data-role="left-toolbar"],
+div[data-role="left-toolbar"] {
+  border-right: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Right panel left border */
+td[data-role="right-toolbar"],
+div[data-role="right-toolbar"] {
+  border-left: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Bottom timescale/bar top border */
+td[data-role="bottom-toolbar"] {
+  border-top: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* ── FORCE DIALOG/MODAL BACKGROUNDS ── */
+/* Target all dialog and modal backgrounds */
+div[class*="dialog-"],
+div[class*="modal-"],
+div[class*="popup-"],
+div[data-name*="indicator"],
+div[data-name*="settings"],
+div[role="dialog"],
+div[role="alertdialog"] {
+  background-color: var(--rabit-bg, #010101) !important;
+}
+
+/* Target specific TradingView dialog containers */
+div[class*="container"][class*="dialog"],
+div[class*="wrapper"][class*="dialog"],
+div[class*="content"][class*="dialog"] {
+  background-color: var(--rabit-bg, #010101) !important;
+}
+
+/* ── FORCE REMOVE BLUE ACTIVE STATE IN DIALOGS ── */
+/* Target active/selected items in dialogs and lists - only change text color, no background */
+div[class*="menuItem"][class*="selected"],
+div[class*="menuItem"][class*="active"],
+div[class*="listItem"][class*="selected"],
+div[class*="listItem"][class*="active"],
+li[class*="selected"]:not([class*="disabled"]),
+li[class*="active"]:not([class*="disabled"]) {
+  background-color: transparent !important;
+  color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* Reset background for non-active menu items */
+div[class*="menuItem"]:not([class*="selected"]):not([class*="active"]),
+div[class*="listItem"]:not([class*="selected"]):not([class*="active"]),
+li:not([class*="selected"]):not([class*="active"]) {
+  background-color: transparent !important;
+}
+
+/* Target tabs active state - only text color and border, no background */
+div[class*="tab"][class*="selected"]:not([class*="disabled"]),
+div[class*="tab"][class*="active"]:not([class*="disabled"]),
+button[class*="tab"][class*="selected"]:not([disabled]),
+button[class*="tab"][class*="active"]:not([disabled]) {
+  background-color: transparent !important;
+  color: var(--rabit-brand, #FD4C01) !important;
+  border-bottom-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* ── FORCE REMOVE BLUE BORDERS ── */
+/* Override blue borders on active/selected items - more specific */
+div[class*="menuItem"][class*="selected"],
+div[class*="menuItem"][class*="active"],
+div[class*="listItem"][class*="selected"],
+div[class*="listItem"][class*="active"],
+button[class*="selected"]:not([disabled]),
+button[class*="active"]:not([disabled]) {
+  border-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* Override inline blue border styles */
+[style*="border-color: rgb(41, 98, 255)"],
+[style*="border: 1px solid rgb(41, 98, 255)"],
+[style*="border-left-color: rgb(41, 98, 255)"],
+[style*="border-right-color: rgb(41, 98, 255)"],
+[style*="border-top-color: rgb(41, 98, 255)"],
+[style*="border-bottom-color: rgb(41, 98, 255)"] {
+  border-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* ── FIX INPUT FOCUS BORDER ── */
+/* Target input fields and textareas when focused */
+input:focus,
+textarea:focus,
+input[class*="input"]:focus,
+textarea[class*="input"]:focus,
+div[class*="input"]:focus-within {
+  border-color: var(--rabit-brand, #FD4C01) !important;
+  outline-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* Override blue focus ring */
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline-color: var(--rabit-brand, #FD4C01) !important;
+  border-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* ── FIX INPUT BORDER BLUE ── */
+/* Target all input elements with blue border */
+input[style*="border-color: rgb(41, 98, 255)"],
+input[style*="border: 1px solid rgb(41, 98, 255)"],
+textarea[style*="border-color: rgb(41, 98, 255)"],
+textarea[style*="border: 1px solid rgb(41, 98, 255)"],
+div[class*="input"][style*="border-color: rgb(41, 98, 255)"],
+div[class*="input"][style*="border: 1px solid rgb(41, 98, 255)"] {
+  border-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* Override all input borders to orange when focused */
+input:focus,
+textarea:focus {
+  border-color: var(--rabit-brand, #FD4C01) !important;
+  box-shadow: 0 0 0 2px rgba(253, 76, 1, 0.2) !important;
+}
+
+/* ── FIX BLUE BUTTONS ── */
+/* Target all button types and override blue colors */
+button[class*="primary"],
+button[class*="secondary"],
+button[class*="default"],
+div[class*="button"][class*="primary"],
+div[class*="button"][class*="secondary"],
+div[class*="button"][class*="default"] {
+  border-color: transparent !important;
+}
+
+button[class*="primary"]:not([disabled]) {
+  background-color: var(--rabit-brand, #FD4C01) !important;
+  color: #FFFFFF !important;
+  border-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* Override blue button backgrounds */
+button[style*="background-color: rgb(41, 98, 255)"],
+button[style*="background: rgb(41, 98, 255)"],
+div[style*="background-color: rgb(41, 98, 255)"],
+div[style*="background: rgb(41, 98, 255)"] {
+  background-color: var(--rabit-brand, #FD4C01) !important;
+  border-color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* ── FIX OBJECT TREE BACKGROUND ── */
+/* Target object tree menu and dropdown backgrounds */
+div[data-name="legend"],
+div[data-name="object-tree"],
+div[class*="objectTree"],
+div[class*="legend"],
+div[class*="menu"][class*="tree"],
+div[class*="dropdown"][class*="tree"] {
+  background-color: var(--rabit-bg, #010101) !important;
+}
+
+/* Target object tree items */
+div[data-name="legend"] div[class*="item"],
+div[data-name="object-tree"] div[class*="item"],
+div[class*="objectTree"] div[class*="item"] {
+  background-color: transparent !important;
+}
+
+/* Target object tree items hover */
+div[data-name="legend"] div[class*="item"]:hover,
+div[data-name="object-tree"] div[class*="item"]:hover,
+div[class*="objectTree"] div[class*="item"]:hover {
+  background-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ── FIX OBJECT TREE OVERLAY MENU BACKGROUND ── */
+/* Target the overlay/popup that appears when clicking object tree */
+div[data-name="legend"] div[class*="menu"],
+div[data-name="legend"] div[class*="popup"],
+div[data-name="legend"] div[class*="dropdown"],
+div[data-name="object-tree"] div[class*="menu"],
+div[data-name="object-tree"] div[class*="popup"],
+div[data-name="object-tree"] div[class*="dropdown"] {
+  background-color: var(--rabit-bg, #010101) !important;
+}
+
+/* ── HIDE OBJECT TREE BUTTON ── */
+/* Hide object tree button in sidebar */
+div[data-name="legend-widget-button"],
+button[data-name="legend-widget-button"],
+div[class*="legend"][class*="button"],
+button[class*="legend"][class*="button"] {
+  display: none !important;
+}
+
+/* ── REMOVE ROUNDED BACKGROUND FROM HEADER ICONS ── */
+/* Remove background from header toolbar icons */
+div[data-name="header-toolbar"] button,
+div[data-name="header-toolbar"] div[class*="button"] {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+/* ── FIX SETTINGS MENU BACKGROUND ── */
+/* Ensure settings menu items don't have orange background unless truly selected */
+div[data-name*="settings"] div[class*="item"]:not([class*="selected"]):not([class*="active"]),
+div[class*="settings"] div[class*="item"]:not([class*="selected"]):not([class*="active"]),
+div[class*="menu"] div[class*="item"]:not([class*="selected"]):not([class*="active"]) {
+  background-color: transparent !important;
+}
+
+/* Settings menu hover state */
+div[data-name*="settings"] div[class*="item"]:hover:not([class*="selected"]),
+div[class*="settings"] div[class*="item"]:hover:not([class*="selected"]),
+div[class*="menu"] div[class*="item"]:hover:not([class*="selected"]) {
+  background-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ── FIX BOTTOM BAR SETTINGS MENU ── */
+/* Target bottom settings bar specifically and reset all backgrounds */
+div[data-role="bottom-toolbar"] div[class*="item"],
+div[data-role="bottom-toolbar"] div[class*="menu"] div,
+div[data-role="bottom-toolbar"] li {
+  background-color: transparent !important;
+}
+
+/* Bottom bar settings hover - only light gray, no orange */
+div[data-role="bottom-toolbar"] div[class*="item"]:hover,
+div[data-role="bottom-toolbar"] div[class*="menu"] div:hover,
+div[data-role="bottom-toolbar"] li:hover {
+  background-color: rgba(255,255,255,0.06) !important;
+  color: #FFFFFF !important;
+}
+
+/* Bottom bar settings selected - only if truly selected */
+div[data-role="bottom-toolbar"] div[class*="item"][class*="selected"],
+div[data-role="bottom-toolbar"] div[class*="item"][class*="active"],
+div[data-role="bottom-toolbar"] li[class*="selected"],
+div[data-role="bottom-toolbar"] li[class*="active"] {
+  background-color: rgba(253, 76, 1, 0.15) !important;
+  color: var(--rabit-brand, #FD4C01) !important;
+}
+
+/* Override inline blue styles */
+[style*="background-color: rgb(41, 98, 255)"],
+[style*="background: rgb(41, 98, 255)"],
+[style*="background-color: rgb(42, 46, 57)"],
+[style*="background: rgb(42, 46, 57)"] {
+  background-color: rgba(253, 76, 1, 0.15) !important;
+}
+

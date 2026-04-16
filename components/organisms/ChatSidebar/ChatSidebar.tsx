@@ -147,72 +147,96 @@ export const ChatSidebar = ({ isVisible, onClose }: ChatSidebarProps) => {
           </TouchableOpacity>
         </View>
 
-        {/* Scrollable History / Content */}
-        <ScrollView 
-          showsVerticalScrollIndicator={false} 
-          contentContainerStyle={{ paddingBottom: 20 }}
-          stickyHeaderIndices={[0]}
-        >
-          {/* Sticky Header Wrapper */}
-          <View style={{ backgroundColor: theme === 'dark' ? '#111111' : '#FFFFFF', paddingBottom: 12 }}>
-            <Text color="secondary" size="xs" weight="bold" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
-              Session History
-            </Text>
-          </View>
-          
-          <View style={{ marginBottom: 16 }}>
-            {/* Chat History Items */}
-            <View style={{ gap: 2 }}>
-              {DUMMY_HISTORY.map((item) => (
-                <TouchableOpacity 
-                  key={item.id}
-                  style={{ 
-                    flexDirection: 'row', 
-                    alignItems: 'center', 
-                    paddingVertical: 8,
-                    paddingHorizontal: 8,
-                    borderRadius: 12,
-                    gap: 12,
-                  }}
-                  activeOpacity={0.6}
-                >
-                  <Text size="sm" numberOfLines={1} style={{ flex: 1 }}>{item.title}</Text>
-                  
-                  <TouchableOpacity 
-                    onPress={() => console.log('Menu for', item.id)}
-                    style={{ padding: 4 }}
-                  >
-                    <Icon name="DotsThree" size={20} color="secondary" style={{ opacity: 0.5 }} />
-                  </TouchableOpacity>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        </ScrollView>
-
-        {/* BOTTOM GRADIENT MASK for History */}
-        <View
-          pointerEvents="none"
-          style={{
-            position: 'absolute',
-            bottom: insets.bottom + 64, // Positioned right above the Bottom Menu
-            left: 0,
-            right: 0,
-            height: 60,
-            zIndex: 10,
-          }}
-        >
-          <LinearGradient
-            colors={[
-              tokens.color[theme].background + '00', 
-              theme === 'dark' ? '#111111' : '#FFFFFF'
-            ]} 
-            style={{ flex: 1 }}
-          />
+        {/* Session History Header - Fixed */}
+        <View style={{ paddingBottom: 12 }}>
+          <Text color="secondary" size="xs" weight="bold" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
+            Session History
+          </Text>
         </View>
 
-        {/* Bottom Menu */}
-        <View style={{ paddingBottom: insets.bottom + 20 }}>
+        {/* Scrollable History / Content */}
+        <View style={{ flex: 1, position: 'relative' }}>
+          <ScrollView 
+            showsVerticalScrollIndicator={false} 
+            contentContainerStyle={{ paddingTop: 20, paddingBottom: 20 }}
+          >
+            <View style={{ marginBottom: 16 }}>
+              {/* Chat History Items */}
+              <View style={{ gap: 2 }}>
+                {DUMMY_HISTORY.map((item) => (
+                  <TouchableOpacity 
+                    key={item.id}
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      paddingVertical: 8,
+                      paddingHorizontal: 8,
+                      borderRadius: 12,
+                      gap: 12,
+                    }}
+                    activeOpacity={0.6}
+                  >
+                    <Text size="sm" numberOfLines={1} style={{ flex: 1 }}>{item.title}</Text>
+                    
+                    <TouchableOpacity 
+                      onPress={() => console.log('Menu for', item.id)}
+                      style={{ padding: 4 }}
+                    >
+                      <Icon name="DotsThree" size={20} color="secondary" style={{ opacity: 0.5 }} />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          </ScrollView>
+
+          {/* TOP GRADIENT MASK */}
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 80,
+            }}
+          >
+            <LinearGradient
+              colors={[
+                theme === 'dark' ? '#111111' : '#FFFFFF',
+                (theme === 'dark' ? '#111111' : '#FFFFFF') + '00'
+              ]} 
+              style={{ flex: 1 }}
+            />
+          </View>
+
+          {/* BOTTOM GRADIENT MASK for History only */}
+          <View
+            pointerEvents="none"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 80,
+            }}
+          >
+            <LinearGradient
+              colors={[
+                (theme === 'dark' ? '#111111' : '#FFFFFF') + '00', 
+                theme === 'dark' ? '#111111' : '#FFFFFF'
+              ]} 
+              style={{ flex: 1 }}
+            />
+          </View>
+        </View>
+
+        {/* Bottom Menu - Outside gradient area */}
+        <View style={{ 
+          paddingBottom: insets.bottom + 20,
+          paddingTop: 16,
+          backgroundColor: theme === 'dark' ? '#111111' : '#FFFFFF',
+        }}>
            <TouchableOpacity 
              style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}
              activeOpacity={0.7}

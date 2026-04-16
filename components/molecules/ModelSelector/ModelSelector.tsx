@@ -21,7 +21,7 @@ const MODELS: ModelOption[] = [
   { id: 'sonnet', name: 'Claude 3.5 Sonnet', provider: 'Anthropic', icon: 'Robot' },
   { id: 'gpt4o', name: 'GPT-4o', provider: 'OpenAI', icon: 'Brain' },
   { id: 'gemini-pro', name: 'Gemini 1.5 Pro', provider: 'Google', icon: 'Globe' },
-  { id: 'llama3', name: 'Llama 3 70B', provider: 'Meta', icon: 'Infinity' },
+  { id: 'llama3', name: 'Llama 3 70B', provider: 'Meta', icon: 'Atom' },
   { id: 'flash', name: 'Rabit Flash', provider: 'Rabit', icon: 'Lightning' },
   { id: 'gpt4t', name: 'GPT-4 Turbo', provider: 'OpenAI', icon: 'Cpu' },
   { id: 'haiku', name: 'Claude 3 Haiku', provider: 'Anthropic', icon: 'Wind' },
