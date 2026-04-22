@@ -1,3 +1,10 @@
+import {
+  buildChartWsUrl,
+  getChartRuntimeConfig,
+  normalizeAssetSymbol,
+} from './rabitChartRuntime';
+import { getResolutionBucketMs } from './rabitResolution';
+
 const activeSubscriptions = new Map();
 
 export const subscribeBars = (
@@ -7,53 +14,102 @@ export const subscribeBars = (
   subscriberUID,
   onResetCacheNeededCallback
 ) => {
-  console.log('[Rabit Datafeed] Subscribe realtime dummy:', subscriberUID);
-  
-  let currentPrice = 65000; 
-  let lastBarTime = Date.now();
-  lastBarTime = Math.floor(lastBarTime / 60000) * 60000; // bulatkan ke 1 menit terdekat
-  let currentOpen = currentPrice;
-  let currentHigh = currentPrice;
-  let currentLow = currentPrice;
+  const runtime = getChartRuntimeConfig();
+  const symbol = normalizeAssetSymbol(symbolInfo.name);
+  const bucketMs = getResolutionBucketMs(resolution);
 
-  // Simulate tick data per 1 second
-  const intervalId = setInterval(() => {
-    // harga berfluktuasi random
-    const randOffset = (Math.random() - 0.5) * 15; 
-    const tickPrice = currentPrice + randOffset;
-    const now = Date.now();
+  console.log('[Rabit Datafeed] Subscribe realtime:', subscriberUID, symbol, resolution);
 
-    // Reset bar jika beda menit
-    if (now >= lastBarTime + 60000) {
-      lastBarTime += 60000;
-      currentOpen = currentPrice;
-      currentHigh = currentPrice;
-      currentLow = currentPrice;
+  const subscription = {
+    socket: null,
+    pingIntervalId: null,
+    currentBar: null,
+  };
+
+  const socket = new WebSocket(buildChartWsUrl('/api/ws/prices'));
+  subscription.socket = socket;
+
+  socket.onopen = () => {
+    subscription.pingIntervalId = window.setInterval(() => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send('ping');
+      }
+    }, 20000);
+  };
+
+  socket.onmessage = (event) => {
+    if (event.data === 'pong') {
+      return;
     }
 
-    currentHigh = Math.max(currentHigh, tickPrice);
-    currentLow = Math.min(currentLow, tickPrice);
+    try {
+      const payload = JSON.parse(event.data);
+      if (normalizeAssetSymbol(payload?.symbol) !== symbol) {
+        return;
+      }
+      if (payload?.source_exchange && payload.source_exchange !== runtime.exchange) {
+        return;
+      }
 
-    onRealtimeCallback({
-      time: lastBarTime,
-      open: currentOpen,
-      high: currentHigh,
-      low: currentLow,
-      close: tickPrice,
-      volume: Math.random() * 5
-    });
+      const price = Number(payload.price);
+      const timestamp = Date.parse(payload.timestamp || new Date().toISOString());
+      if (!Number.isFinite(price) || !Number.isFinite(timestamp)) {
+        return;
+      }
 
-    currentPrice = tickPrice;
-  }, 1000); 
+      const barTime = Math.floor(timestamp / bucketMs) * bucketMs;
 
-  activeSubscriptions.set(subscriberUID, intervalId);
+      if (!subscription.currentBar || subscription.currentBar.time !== barTime) {
+        const previousClose = subscription.currentBar?.close ?? price;
+        subscription.currentBar = {
+          time: barTime,
+          open: previousClose,
+          high: Math.max(previousClose, price),
+          low: Math.min(previousClose, price),
+          close: price,
+          volume: 0,
+        };
+      } else {
+        subscription.currentBar = {
+          ...subscription.currentBar,
+          high: Math.max(subscription.currentBar.high, price),
+          low: Math.min(subscription.currentBar.low, price),
+          close: price,
+          // Hyperliquid price updates do not provide per-candle volume here, so
+          // keep the current bucket volume unchanged instead of injecting 24h volume.
+          volume: Number(subscription.currentBar.volume ?? 0),
+        };
+      }
+
+      onRealtimeCallback(subscription.currentBar);
+    } catch (error) {
+      console.error('[Rabit Datafeed] Realtime parse error:', error);
+    }
+  };
+
+  socket.onerror = (error) => {
+    console.error('[Rabit Datafeed] Realtime socket error:', error);
+  };
+
+  socket.onclose = () => {
+    if (subscription.pingIntervalId) {
+      clearInterval(subscription.pingIntervalId);
+    }
+  };
+
+  activeSubscriptions.set(subscriberUID, subscription);
 };
 
 export const unsubscribeBars = (subscriberUID) => {
-  console.log('[Rabit Datafeed] Unsubscribe realtime dummy:', subscriberUID);
-  const intervalId = activeSubscriptions.get(subscriberUID);
-  if (intervalId) {
-    clearInterval(intervalId);
+  console.log('[Rabit Datafeed] Unsubscribe realtime:', subscriberUID);
+  const subscription = activeSubscriptions.get(subscriberUID);
+  if (subscription?.pingIntervalId) {
+    clearInterval(subscription.pingIntervalId);
+  }
+  if (subscription?.socket && subscription.socket.readyState <= WebSocket.OPEN) {
+    subscription.socket.close();
+  }
+  if (subscription) {
     activeSubscriptions.delete(subscriberUID);
   }
 };

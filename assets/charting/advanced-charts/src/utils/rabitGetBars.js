@@ -1,3 +1,6 @@
+import { buildChartApiUrl, getChartRuntimeConfig, normalizeAssetSymbol } from './rabitChartRuntime';
+import { mapResolutionToInterval } from './rabitResolution';
+
 export const getBars = async (
   symbolInfo,
   resolution,
@@ -8,41 +11,57 @@ export const getBars = async (
   console.log('[Rabit Datafeed] getBars:', symbolInfo.name, resolution);
   
   try {
-    const bars = [];
-    let currentTime = periodParams.to * 1000;
-    
-    // Sebagai dummy data generator, kita buat candlestick dari waktu tujuan mundur ke belakang.
-    // Anggap default jarak bar adalah 1 menit (60.000 ms)
-    const intervalMs = 60 * 1000; 
-    let currentPrice = 65000; // Contoh harga (BTC misalnya di area 65k)
+    const symbol = normalizeAssetSymbol(symbolInfo.name);
+    const interval = mapResolutionToInterval(resolution);
+    const { ohlcSource } = getChartRuntimeConfig();
+    const limit = Math.max(50, Math.min(Number(periodParams?.countBack) || 300, 1000));
 
-    // Generate 150 bar kebelakang
-    for (let i = 0; i < 150; i++) {
-        const time = currentTime - (i * intervalMs);
-        const offset = (Math.random() - 0.5) * 50; 
-        
-        const open = currentPrice;
-        const close = currentPrice + offset;
-        const high = Math.max(open, close) + (Math.random() * 20);
-        const low = Math.min(open, close) - (Math.random() * 20);
-        const volume = Math.random() * 100;
+    const query = new URLSearchParams({
+      interval,
+      limit: String(limit),
+      source: ohlcSource,
+    });
 
-        bars.push({
-            time, open, high, low, close, volume
-        });
-
-        // Price untuk bar sebelumnya (karena kita me-loop mundur)
-        currentPrice = currentPrice - offset; 
+    const response = await fetch(buildChartApiUrl(`/api/assets/${encodeURIComponent(symbol)}/ohlc?${query.toString()}`));
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.warn('[Rabit Datafeed] No OHLC data for', symbol, ohlcSource);
+        onHistoryCallback([], { noData: true });
+        return;
+      }
+      throw new Error(`OHLC request failed with HTTP ${response.status}`);
     }
-    
-    // TradingView butuh urutan waktu maju (lama -> terbaru)
-    bars.reverse();
 
-    if (bars.length > 0) {
-      onHistoryCallback(bars, { noData: false });
-    } else {
-      onHistoryCallback([], { noData: true });
-    }
+    const payload = await response.json();
+    const bars = Array.isArray(payload?.data)
+      ? payload.data
+          .map((item) => ({
+            time: Number(item.timestamp),
+            open: Number(item.open),
+            high: Number(item.high),
+            low: Number(item.low),
+            close: Number(item.close),
+            volume: Number(item.volume ?? 0),
+          }))
+          .filter((item) => Number.isFinite(item.time))
+          .sort((left, right) => left.time - right.time)
+      : [];
+
+    const fromMs = Number(periodParams?.from || 0) * 1000;
+    const toMs = Number(periodParams?.to || 0) * 1000;
+    const filteredBars = bars.filter((item) => {
+      if (fromMs && item.time < fromMs) {
+        return false;
+      }
+
+      if (toMs && item.time > toMs) {
+        return false;
+      }
+
+      return true;
+    });
+
+    onHistoryCallback(filteredBars, { noData: filteredBars.length === 0 });
   } catch (err) {
     console.error('[Rabit Datafeed] getBars Error:', err);
     onErrorCallback(err);

@@ -26,7 +26,7 @@ class ChartStateManager {
 
     // Default state
     return {
-      symbol: 'BTCUSDT',
+      symbol: 'BTC',
       timeframe: '60',
       chartType: 1, // Candles
       indicators: [],
